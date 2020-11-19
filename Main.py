@@ -1,7 +1,41 @@
-import mysql.connector as connector
+
 import json 
+from Connection import Connection
 
-
+class User:
+    def __init__(self):
+        self.__setup_variables()
+    def __setup_variables(self):
+        self.host:str
+        self.user:str
+        self.select_priv:bool 
+        self.insert_priv:bool 
+        self.update_priv:bool
+        self.delete_priv:bool
+        self.create_priv:bool
+        self.drop_priv:bool 
+        self.reload_priv:bool 
+        self.shutdown_priv:bool 
+        self.process_priv:bool 
+        self.file_priv:bool
+        self.grant_priv:bool
+        self.references_priv:bool
+        self.index_priv:bool
+        self.alter_priv:bool
+        self.show_db_priv:bool
+        self.super_priv:bool
+        self.create_tmp_table_priv:bool
+        self.lock_tables_priv:bool
+        self.execute_priv:bool
+        self.repl_slave_priv:bool 
+        self.create_view_priv:bool
+        self.show_view_priv:bool
+        self.create_routine_priv:bool
+        self.alter_routine_priv:bool
+        self.create_user_priv:bool
+        self.event_priv:bool
+        self.trigger_priv:bool
+        self.create_tablespace_priv:bool
 
 
 def getCredentials():
@@ -11,24 +45,12 @@ def getCredentials():
         return credentials
 
 
-
-def connectToDB(user_index = 0, db_name = 'Project'):
-
-    global data
-    
-    db = connector.connect(
-        host = "localhost",
-        user = data['users'][user_index]['name'],
-        password = data['users'][user_index]['password'],
-        database = db_name
-    )
-
-    return db   
-
+user = User()
 data = getCredentials()
 views = []
 tables = []
-mydb = connectToDB()
+connect = Connection()
+mydb = connect.db
 cursor = mydb.cursor()
 
 def dispTables():
@@ -88,8 +110,7 @@ def init():
 def main():
     init()
 
-    dispViews()
-    dispView('Location_Building_View')
+    getUsers()
 
 def getUsers():
     users = []
@@ -98,12 +119,11 @@ def getUsers():
     cursor.execute(cmd)
 
     result = cursor.fetchall()
-
     for i in result:
         print(i[1])
         users.append(i[1])
 
     return users
-            
+
 
 main()
