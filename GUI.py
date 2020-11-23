@@ -23,6 +23,9 @@ class LoginFrame (wx.Frame):
 		self.my_btn.Bind(wx.EVT_BUTTON,self.btnListener)
 		self.sizer.Add(self.my_btn,0, wx.ALL | wx.CENTER, 5)
 
+		self.LoginPrompt = wx.StaticText(self.panel, label="Please Login")
+		self.sizer.Add(self.LoginPrompt,0, wx.ALL | wx.CENTER, 5)
+
 		self.panel.SetSizer(self.sizer)
 
 		# Makes sure the login prompt spawns in the middle of the screen 
@@ -36,9 +39,11 @@ class LoginFrame (wx.Frame):
 		else:
 			try:
 				self.connection = Connection(userName= name, psswrd= password)
+				print ('SUCCESS')
+				self.LoginPrompt.SetLabel("Successfully Logged In")
 			except:
-				self.LoginFailPrompt = wx.StaticText(self.panel, label="Login Failure")
-				self.sizer.Add(self.LoginFailPrompt,0, wx.ALL | wx.EXPAND, 5)
+				self.LoginPrompt.SetLabelText("Failed to Login")
+				print("Failed to connect to the database")
 
 class App(wx.App):
 	def OnInit(self):
