@@ -11,6 +11,7 @@ class Connection:
             userName = credentials['users'][user_index]['name']
             psswrd = credentials['users'][user_index]['password']
 
+        print('Connecting to \t', userName)
         self.db = connector.connect(
             host = "localhost",
             user = userName,
