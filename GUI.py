@@ -1,6 +1,6 @@
 from sys import flags
 import wx
-from wx.core import MAXIMIZE_BOX, PasswordEntryDialog, TE_PASSWORD
+from wx.core import MAXIMIZE_BOX, PasswordEntryDialog, Sleep, TE_PASSWORD
 from Connection import Connection
 
 
@@ -9,30 +9,37 @@ class QueryFrame(wx.Frame):
 		super(QueryFrame,self).__init__(parent, title=title)
 
 		self.panel = wx.Panel(self)
-		self.superSizer = wx.BoxSizer(wx.VERTICAL)
+		self.mainSizer = wx.BoxSizer(wx.VERTICAL)
 
 		self.connect = connection
 		dbInfo = wx.StaticText(self.panel, label ="Logged into " + self.connect.name)
-		self.superSizer.Add(dbInfo, 0, wx.ALL | wx.CENTER,5)
+		self.mainSizer.Add(dbInfo, 0, wx.ALL | wx.CENTER,5)
 
 		self.changeUserBTN = wx.Button(self.panel, label='Change User')
 		self.changeUserBTN.Bind(wx.EVT_BUTTON, self.changeUserLISTEN)
-		self.superSizer.Add(self.changeUserBTN,0,wx.ALL | wx.CENTER,5)
+		self.mainSizer.Add(self.changeUserBTN,0,wx.ALL | wx.CENTER,5)
 
 		self.queryIN = wx.TextCtrl(self.panel)
-		self.superSizer.Add(self.queryIN,0, wx.ALL | wx.CENTER | wx.EXPAND , 5 )
+		self.mainSizer.Add(self.queryIN,0, wx.ALL | wx.CENTER | wx.EXPAND , 5 )
 
 		self.executeQueryBTN = wx.Button(self.panel, label = "Execute Command")
 		self.executeQueryBTN.Bind(wx.EVT_BUTTON, self.executeQueryLISTEN)
-		self.superSizer.Add(self.executeQueryBTN,0,wx.ALL | wx.CENTER,5)
+		self.mainSizer.Add(self.executeQueryBTN,0,wx.ALL | wx.CENTER,5)
 
+		permStr = 'User Permissions:\n'
+
+		for i in self.connect.privileges:
+			permStr += i + '\n'
+
+		self.permTxt = wx.StaticText(self.panel, label = permStr)
+		self.mainSizer.Add(self.permTxt,0, wx.ALL | wx.CENTER,5)
+
+		self.panel.SetSizer(self.mainSizer)
+		self.Centre()
 		
 
-		self.panel.SetSizer(self.superSizer)
-		self.Centre()
-
 	def changeUserLISTEN(self, event):
-		self.Hide()
+		self.Destroy()
 
 		login = LoginFrame()
 		login.Show()
@@ -88,6 +95,7 @@ class LoginFrame (wx.Frame):
 				
 				nextFrame = QueryFrame(parent = None, title="Database", connection = self.connection)
 				nextFrame.Show()
+
 			except Exception as e:
 				self.LoginPrompt.SetLabelText("Failed to Login")
 				print(e)
