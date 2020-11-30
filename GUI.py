@@ -26,6 +26,13 @@ class QueryFrame(wx.Frame):
 		self.executeQueryBTN.Bind(wx.EVT_BUTTON, self.executeQueryLISTEN)
 		self.mainSizer.Add(self.executeQueryBTN,0,wx.ALL | wx.CENTER,5)
 
+		permTypeStr = 'User Permission Types: \n'
+		
+		for i in self.connect.privilegeTypes:
+			permTypeStr += i + '\n'
+
+		self.permTypeTxt = wx.StaticText(self.panel, label = permTypeStr)
+		self.mainSizer.Add(self.permTypeTxt, 0, wx.ALL | wx.CENTER)
 		permStr = 'User Permissions:\n'
 
 		for i in self.connect.privileges:
