@@ -2,41 +2,6 @@
 import json 
 from Connection import Connection
 
-class User:
-    def __init__(self):
-        self.__setup_variables()
-    def __setup_variables(self):
-        self.host:str
-        self.user:str
-        self.select_priv:bool 
-        self.insert_priv:bool 
-        self.update_priv:bool
-        self.delete_priv:bool
-        self.create_priv:bool
-        self.drop_priv:bool 
-        self.reload_priv:bool 
-        self.shutdown_priv:bool 
-        self.process_priv:bool 
-        self.file_priv:bool
-        self.grant_priv:bool
-        self.references_priv:bool
-        self.index_priv:bool
-        self.alter_priv:bool
-        self.show_db_priv:bool
-        self.super_priv:bool
-        self.create_tmp_table_priv:bool
-        self.lock_tables_priv:bool
-        self.execute_priv:bool
-        self.repl_slave_priv:bool 
-        self.create_view_priv:bool
-        self.show_view_priv:bool
-        self.create_routine_priv:bool
-        self.alter_routine_priv:bool
-        self.create_user_priv:bool
-        self.event_priv:bool
-        self.trigger_priv:bool
-        self.create_tablespace_priv:bool
-
 
 def getCredentials():
     credentials = {}
@@ -45,11 +10,11 @@ def getCredentials():
         return credentials
 
 
-user = User()
+
 data = getCredentials()
 views = []
 tables = []
-connect = Connection()
+connect = Connection(user_index=3)
 mydb = connect.db
 cursor = mydb.cursor()
 
@@ -110,7 +75,7 @@ def init():
 def main():
     init()
 
-    getUsers()
+    #getUsers()
 
 def getUsers():
     users = []
@@ -124,6 +89,7 @@ def getUsers():
         users.append(i[1])
 
     return users
+
 
 
 main()
