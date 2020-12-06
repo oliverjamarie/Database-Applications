@@ -58,11 +58,9 @@ Used to allow a user to login to the database.  If the takes the inputs from __i
 #### Frame Style:
 * __wx.MAXIMIZE_BOX__ (user can minmize window)
 * __wx.CLOSE_BOX__ (user can close the window)
-<br>
-Sizer:
+#### Sizer:
   * Name: **sizer**  
   * Type: __wx.BoxSizer__  
-<br>
 #### Text Inputs:  
 * __inputName__:
   * Purpose: Input field for the username
@@ -71,12 +69,10 @@ Sizer:
   * Purpose: Input field for the password
   * Style: __TE_PASSWORD__ (hides the input)
   * Sizer: sizer
-<br>
 * __loginBTN__:
   * Purpose: Attempts to login into database
   * Binded to: __loginBTNListener()__
   * Sizer: sizer
-<br>
 #### Static Texts:
 * __LoginPrompt__ :
   * Purpose: 
