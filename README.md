@@ -41,8 +41,8 @@ Function | Description
 # <a name = "Gui.py"> Gui.py </a>
 Handles the UI aspects of the application.  
 Classes :  
-* <a href="App"> App </a>
-* <a href="LoginFrame"> Login Frame </a>
+* <a href="#App"> App </a>
+* <a href="#LoginFrame"> Login Frame </a>
 * QueryFrame
 * QueryOutputFrame
 
@@ -51,7 +51,6 @@ Classes :
 Used to initialise the application
 #### Functions
 ***bool*** OnInit() | Starts application
-<br> <br>
 ### <a name="LoginFrame"> LoginFrame(wx.Frame) </a>
 Used to allow a user to login to the database.  If the takes the inputs from __inputName__ and __inputPassword__ to attempt connecting to the database  
 <br>
