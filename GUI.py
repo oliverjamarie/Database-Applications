@@ -1,7 +1,39 @@
 from sys import flags
 import wx
-from wx.core import MAXIMIZE_BOX, PasswordEntryDialog, Sleep, TE_PASSWORD
+import wx.grid
+from wx.core import MAXIMIZE_BOX, Panel, PasswordEntryDialog, Sleep, TE_PASSWORD
 from Connection import Connection
+from Query_Resp import Query_Resp
+
+class QueryOutputFrame(wx.Frame):
+	def __init__(self,query_resp:Query_Resp, parent = None, title = "Query Output"):
+		super(QueryOutputFrame,self).__init__(parent, title= title)
+		
+		self.mainSizer = wx.BoxSizer(wx.VERTICAL)
+
+		self.grid = wx.grid.Grid(self, -1)
+		
+		results = query_resp.respl
+
+		width = len(results[0])
+		height = len(results)
+
+		#creates a grid of width times height
+		self.grid.CreateGrid(height,width)
+
+		self.grid.SetRowSize(0, 120)
+		self.grid.SetColSize(0,120)
+
+		for i in range(0, height-1):
+			for j in range (0, width-1):
+				msg = '{}'.format(results[i][j])
+				print ('{}\t{}\t{}\t'.format(i,j,msg))
+				self.grid.SetCellValue(j,i,msg)
+		self.mainSizer.Add(self.grid,0, wx.ALL| wx.CENTER, 5)
+		
+		self.Show()
+
+
 
 
 class QueryFrame(wx.Frame):
@@ -57,9 +89,8 @@ class QueryFrame(wx.Frame):
 		if not cmd:
 			print('Empty Query')
 		else:
-			print (cmd)
 			result = self.connect.execute(cmd)
-			print(result)
+			QueryOutputFrame(result)
 		
 
 class LoginFrame (wx.Frame):
@@ -75,9 +106,9 @@ class LoginFrame (wx.Frame):
 		self.inputPassword = wx.TextCtrl(self.panel, pos=(155,5), style=TE_PASSWORD)
 		self.sizer.Add(self.inputPassword,0, wx.ALL | wx.EXPAND, 5)
 
-		self.my_btn = wx.Button(self.panel, label='Login', pos=(5, 55))
-		self.my_btn.Bind(wx.EVT_BUTTON,self.btnListener)
-		self.sizer.Add(self.my_btn,0, wx.ALL | wx.CENTER, 5)
+		self.loginBTN = wx.Button(self.panel, label='Login', pos=(5, 55))
+		self.loginBTN.Bind(wx.EVT_BUTTON,self.loginBTNListener)
+		self.sizer.Add(self.loginBTN,0, wx.ALL | wx.CENTER, 5)
 
 		self.LoginPrompt = wx.StaticText(self.panel, label="Please Login")
 		self.sizer.Add(self.LoginPrompt,0, wx.ALL | wx.CENTER, 5)
@@ -87,7 +118,7 @@ class LoginFrame (wx.Frame):
 		# Makes sure the login prompt spawns in the middle of the screen 
 		self.Centre()
 
-	def btnListener(self, event):
+	def loginBTNListener(self, event):
 		name = self.inputName.GetValue()
 		password = self.inputPassword.GetValue()
 		if not name:
@@ -98,7 +129,7 @@ class LoginFrame (wx.Frame):
 				print ('SUCCESS')
 				self.LoginPrompt.SetLabel("Successfully Logged In")
 
-				self.Hide()
+				#self.Hide()
 				
 				nextFrame = QueryFrame(parent = None, title="Database", connection = self.connection)
 				nextFrame.Show()
@@ -111,7 +142,12 @@ class LoginFrame (wx.Frame):
 
 class App(wx.App):
 	def OnInit(self):
-		self.frame = LoginFrame(parent=None, title="Login")
+		#self.frame = LoginFrame(parent=None, title="Login")
+
+		#self.frame = QueryOutputFrame()
+
+		self.frame = QueryFrame(None,'Query',  Connection(user_index=3))
+
 		self.frame.Show()
 
 		return True
