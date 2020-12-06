@@ -1,9 +1,12 @@
 # Database-Applications
 
+If the headers or lists aren't anchors, their documentation has not yet been written.   
+
+GUI uses **wxPython** framework
 
 # Files
 * <a href = "#Main.py"> Main.py </a>
-* Gui.py
+* <a href = "#Gui.py"> Gui.py </a>
 * Connection.py
 * Query_Resp.py
 * Credentials.json
@@ -35,10 +38,49 @@ Function | Description
 **dict** getCredentials() | Opens and reads **Credentials.json** file to return a dictionary of the some of the users of the database ***LEGACY***
 
 --------------
-# Gui.py
+# <a name = "Gui.py"> Gui.py </a>
 Handles the UI aspects of the application.  
-Objects :  
-* App
-* Login Frame
+Classes :  
+* <a href="App"> App </a>
+* <a href="LoginFrame"> Login Frame </a>
 * QueryFrame
 * QueryOutputFrame
+
+## Classes
+### <a name="App"> App(wx.App) </a>
+Used to initialise the application
+#### Functions
+***bool*** OnInit() | Starts application
+<br> <br>
+### <a name="LoginFrame"> LoginFrame(wx.Frame) </a>
+Used to allow a user to login to the database.  If the takes the inputs from __inputName__ and __inputPassword__ to attempt connecting to the database  
+<br>
+#### Frame Style:
+* __wx.MAXIMIZE_BOX__ (user can minmize window)
+* __wx.CLOSE_BOX__ (user can close the window)
+<br>
+Sizer:
+  * Name: **sizer**  
+  * Type: __wx.BoxSizer__  
+<br>
+#### Text Inputs:  
+* __inputName__:
+  * Purpose: Input field for the username
+  * Sizer: sizer
+* __inputPassword__ :
+  * Purpose: Input field for the password
+  * Style: __TE_PASSWORD__ (hides the input)
+  * Sizer: sizer
+<br>
+* __loginBTN__:
+  * Purpose: Attempts to login into database
+  * Binded to: __loginBTNListener()__
+  * Sizer: sizer
+<br>
+#### Static Texts:
+* __LoginPrompt__ :
+  * Purpose: 
+    * Tells the user to log in
+    * If the log in fails, it's used to tell the user that it failed
+
+
