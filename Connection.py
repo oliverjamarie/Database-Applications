@@ -2,6 +2,8 @@ import mysql.connector as connector
 import json
 import re
 from mysql.connector import cursor
+from Query_Resp import Query_Resp
+        
 
 class Connection:
     def __init__(self, db_name='Project', user_index = 0, userName= '', psswrd = ''):
@@ -42,13 +44,12 @@ class Connection:
 
     # returns a list for the result
     def execute(self, queryMsg:str = ''):
-        self.cursor.execute(queryMsg)
-        
-        return self.cursor.fetchall()
+        resp = Query_Resp(self.cursor,queryMsg)
+        return resp
 
     def getPrivileges(self):
         cmd = 'SHOW GRANTS FOR \'{}\'@\'localhost\''.format(self.name)
-        result = self.execute(cmd)
+        result = self.execute(cmd).resp
         
         resultSTR = ''
         for i in result: 
@@ -83,12 +84,10 @@ class Connection:
             return ['User has all privilege types']
         
         cmd = 'SHOW GRANTS FOR \'{}\'@\'localhost\''.format(self.name)
-        result = self.execute(cmd)
-        
-        resultSTR = ''
-        for i in result: 
-            for j in i:
-                resultSTR += j
+        result = self.execute(cmd).resp
+
+        print(len)
+        resultSTR:str = self.resultToString(result)
         
         if('GRANT ALL PRIVILEGES ON `{}`.* TO `{}`@`localhost`'.format(self.db.database, self.db.user) in resultSTR):
             print ('FULL PRIVILIGES')
@@ -97,8 +96,11 @@ class Connection:
         print (resultSTR)
         list1 = resultSTR.split('GRANT')
 
+        print(list1)
+
         print(list1[2])
         list2 = list1[2].split('ON')
+        
 
         print(list2[0])
         return list2[0].split(',')
@@ -107,6 +109,20 @@ class Connection:
         cmd = 'SHOW GRANTS FOR \'{}\'@\'localhost\''.format(self.name)
 
         return self.execute(cmd) 
+
+    # Used to extract and combine strings from a 1 or multidemensional collection of strings
+    # into one 
+    # Recursive Function
+    def resultToString(self, other)->str:
+        msg:str = ''
+
+        if type(other) == str:
+            return other
+        else:
+            for i in other:
+                msg += self.resultToString(i) + ' '
+
+        return msg
 
 
         
